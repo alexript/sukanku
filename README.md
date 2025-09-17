@@ -1,0 +1,1 @@
+This is a hobby project to create an IRC server and client.
