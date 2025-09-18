@@ -20,6 +20,7 @@ target("liblua")
     set_basename("lua")
     add_files("other/3rd_party/lua/src/*.c|lua.c|luac.c|onelua.c")
     add_headerfiles("other/3rd_party/lua/src/*.h", {prefixdir = "lua"})
+    add_includedirs("other/3rd_party/lua/src", {public = true})
 
     add_defines("LUA_COMPAT_5_2", "LUA_COMPAT_5_1")
     if is_plat("linux", "bsd", "cross") then
@@ -37,6 +38,17 @@ target("liblua")
 target("libsukankurt")
     set_kind("static")
     set_basename("sukankurt")
+
+    add_headerfiles("other/filesystem/*.h")
+    add_includedirs("other/filesystem", {public = true})
+    add_files("other/filesystem/*.c")
+
+    add_headerfiles("other/environment/*.h")
+    add_includedirs("other/environment", {public = true})
+    add_files("other/environment/*.c")
+
+    add_headerfiles("other/xdg-basedir/*.h")
+    add_includedirs("other/xdg-basedir", {public = true})
     add_files("other/xdg-basedir/*.c")
 
 
