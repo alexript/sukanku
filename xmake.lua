@@ -4,17 +4,22 @@ if is_host("windows") or is_host("linux") then
    add_requires("tinycc")
 end
 
+if is_host("windows") or is_host("linux") then 
+   set_toolchains("@tinycc")
+else
+   set_toolchains("@clang")
+end
+
+if is_host("windows") then
+   add_sysincludedirs("other/3rd_party/tcc_winapi")
+end
+
+
 target("liblua")
     set_kind("shared")
     set_basename("lua")
     add_files("other/3rd_party/lua/src/*.c|lua.c|luac.c|onelua.c")
     add_headerfiles("other/3rd_party/lua/src/*.h", {prefixdir = "lua"})
-    if is_host("windows") or is_host("linux") then 
-       set_toolchains("@tinycc")
-       add_sysincludedirs("other/3rd_party/lua/tcc_winapi")
-    else
-       set_toolchains("@clang")
-    end
 
     add_defines("LUA_COMPAT_5_2", "LUA_COMPAT_5_1")
     if is_plat("linux", "bsd", "cross") then
@@ -29,57 +34,33 @@ target("liblua")
        end
     end
 
-target("xdgbasedir")
+target("libsukankurt")
     set_kind("static")
+    set_basename("sukankurt")
     add_files("other/xdg-basedir/*.c")
-    if is_host("windows") or is_host("linux") then 
-       set_toolchains("@tinycc")
-    else
-       set_toolchains("@clang")
-    end
 
 
 target("tools")
     set_kind("binary")
     add_files("tools/*.c")
-    add_deps("xdgbasedir")
+    add_deps("libsukankurt")
     add_deps("liblua")
-    if is_host("windows") or is_host("linux") then 
-       set_toolchains("@tinycc")
-    else
-       set_toolchains("@clang")
-    end
 
 
 target("libsukanku")
     set_kind("shared")
     set_basename("sukanku")
     add_files("libsukanku/*.c")
-    add_deps("xdgbasedir")
+    add_deps("libsukankurt")
     add_deps("liblua")
-    if is_host("windows") or is_host("linux") then 
-       set_toolchains("@tinycc")
-    else
-       set_toolchains("@clang")
-    end
 
 target("sukankud")
     set_kind("binary")
     add_files("sukankud/*.c")
     add_deps("libsukanku")
-    if is_host("windows") or is_host("linux") then 
-       set_toolchains("@tinycc")
-    else
-       set_toolchains("@clang")
-    end
 
 target("sukanku")
     set_kind("binary")
     add_files("sukanku/*.c")
     add_deps("libsukanku")
-    if is_host("windows") or is_host("linux") then 
-       set_toolchains("@tinycc")
-    else
-       set_toolchains("@clang")
-    end
 
